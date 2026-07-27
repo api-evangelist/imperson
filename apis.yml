@@ -1,8 +1,30 @@
 aid: imperson
 name: Imperson
-description: Imperson is a company surfaced as a portfolio company of techstars and added to the API Evangelist
-  network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Imperson is an enterprise conversational-AI company and creative studio that
+  builds turnkey, premium chatbots to automate the customer journey through
+  natural, two-way dialogue. Its platform spans lead generation, customer
+  support, sales and e-commerce, and engagement/entertainment, with a
+  conversation engine, dashboard analytics, and a knowledgebase, activating
+  across channels including Facebook Messenger, Amazon Alexa, websites, SMS,
+  Google Assistant, native apps, and phone. Imperson operates an
+  enterprise-sales model (no public self-serve developer API is published) and
+  has produced chatbot experiences for brands such as Disney, Microsoft,
+  Amazon, National Geographic, and Universal. The company was surfaced as a
+  Techstars portfolio company and profiled into the API Evangelist network.
 url: https://raw.githubusercontent.com/api-evangelist/imperson/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source: []
+  generated: '2026-07-22'
+  method: derived
+image: https://static.wixstatic.com/media/dfeb02_6b88203b659746a59986fab720eb18e7~mv2.png/v1/fill/w_1000,h_1000,al_c/dfeb02_6b88203b659746a59986fab720eb18e7~mv2.png
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
@@ -11,9 +33,16 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-19'
 tags:
 - Company
+- Conversational AI
+- Chatbots
+- Customer Support
+- Lead Generation
+- Sales Automation
+- Enterprise
+- Model Context Protocol
 apis: []
 maintainers:
 - FN: Kin Lane
@@ -22,4 +51,18 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://imperson.com/
+  url: https://www.imperson.com/
+- type: Blog
+  url: https://www.imperson.com/blog
+- type: MCPServer
+  name: Imperson Wix Site MCP
+  url: mcp/imperson-mcp.yml
+- type: LLMsTxt
+  url: llms/imperson-llms.txt
+- type: DomainSecurity
+  url: security/imperson-domain-security.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

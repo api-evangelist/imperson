@@ -1,0 +1,43 @@
+generated: '2026-07-19'
+method: searched
+source: https://www.imperson.com/llms.txt
+status: published
+notes: >-
+  Live Wix Site MCP endpoint advertised in the site's /llms.txt and confirmed
+  responding to a JSON-RPC tools/list call. This is a generic Wix-provided site
+  MCP surface (not a bespoke Imperson product API); it exposes public site
+  content, business details, docs, and site-API invocation on a visitor's
+  behalf. No authentication is required to connect.
+server:
+  name: imperson
+  vendor: Wix Site MCP
+  transport: http
+  url: https://www.imperson.com/_api/mcp
+  docs: https://dev.wix.com/docs/develop-websites/articles/get-started/about-the-wix-site-mcp
+  auth: none
+tools:
+  - name: GetBusinessDetails
+    description: Retrieves business and site details such as timezone, email, phone, and address.
+  - name: SearchInSite
+    description: Searches the site for information.
+    parameters: [searchTerm]
+  - name: SearchSiteApiDocs
+    description: Retrieves the API documentation for the Wix business solutions installed on this site and informs the AI client how to use the APIs.
+    parameters: [searchTerm]
+  - name: GenerateVisitorToken
+    description: Creates a new visitor session and obtains a visitor access token for the site.
+  - name: CallWixSiteAPI
+    description: Calls API methods on the site to perform actions on a visitor's behalf, such as querying site data, booking an appointment, or starting a purchase.
+    parameters: [visitorToken, url, method, body]
+  - name: ReadFullDocsArticle
+    description: Fetches a complete article from the Wix developer documentation portal.
+    parameters: [articleUrl]
+  - name: ReadFullDocsMethodSchema
+    description: Fetches the full schema for a Wix API method. Should be called before calling the actual method via CallWixSiteAPI.
+    parameters: [articleUrl]
+capabilities:
+  - Get business details (contact info, location, hours)
+  - Discover products and services on offer
+  - Book services and make reservations
+  - Start a purchase and be directed to the site to complete checkout
+  - Ask questions and get relevant answers without browsing the site
