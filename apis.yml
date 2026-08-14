@@ -33,7 +33,7 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-19'
+modified: '2026-08-14'
 tags:
 - Company
 - Conversational AI
@@ -54,6 +54,18 @@ common:
   url: https://www.imperson.com/
 - type: Blog
   url: https://www.imperson.com/blog
+- type: BlogRSS
+  url: https://www.imperson.com/blog-feed.xml
+- type: TermsOfService
+  url: https://www.imperson.com/terms
+- type: PrivacyPolicy
+  url: https://www.imperson.com/privacy
+- type: SignUp
+  name: Toolbox — free self-service chatbot builder
+  url: https://toolbox.imperson.com
+- type: Components
+  name: Imperson Toolbox chat widget loader
+  url: components/imperson-components.yml
 - type: MCPServer
   name: Imperson Wix Site MCP
   url: mcp/imperson-mcp.yml
@@ -62,7 +74,25 @@ common:
 - type: DomainSecurity
   url: security/imperson-domain-security.yml
 x-enrichment:
-  date: '2026-07-19'
-  status: backfilled
+  date: '2026-08-14'
+  status: minimal
+  artifacts_added: 6
   pass: local-v1
-  note: backfilled from .gitignore signal + verified work evidence
+x-coverage:
+  state: gated
+  reason: sales-gate
+  detail: >-
+    Imperson runs a real product API at api.imperson.com — it backs the company's own Toolbox app — but
+    every path on it answers HTTP 401 behind an HTTP Basic challenge (realm "messaging.api"), there is
+    no developer portal (/developers 404), docs.imperson.com 302s into a Google Workspace Drive, and
+    the only route to the API on the whole nine-page marketing site is a "CONTACT SALES" form.
+  evidence:
+  - url: https://api.imperson.com/
+    status: 401
+  - url: https://www.imperson.com/developers
+    status: 404
+  - url: https://docs.imperson.com/
+    status: 302
+  - url: https://www.imperson.com/.well-known/agent-card.json
+    status: 400
+  checked: '2026-08-14'
