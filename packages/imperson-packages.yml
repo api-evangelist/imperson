@@ -1,0 +1,48 @@
+generated: '2026-08-14'
+method: searched
+source: >-
+  public registry search APIs (npm, PyPI, RubyGems, crates.io, NuGet, Maven Central, pkg.go.dev,
+  Packagist) plus the GitHub org namespace and every page in the imperson.com sitemap
+notes: >-
+  Imperson ships no first-party client libraries. Every registry below was queried unauthenticated and
+  returned nothing published by this company, and the imperson.com site has no SDK, download, or
+  developer page to derive candidates from (github.com/imperson does not exist). The only client-side
+  distribution the company serves is the Toolbox chat widget loader, which is a CDN script with no
+  registry behind it — recorded in components/imperson-components.yml with version: null because the
+  URL is unpinned. No `Packages` or `SDKs` pointer is emitted from this file: an artifact recording
+  zero packages must not read as a presence.
+packages: []
+registries_checked:
+- registry: npm
+  query: https://registry.npmjs.org/-/v1/search?text=imperson
+  result: no first-party package
+- registry: pypi
+  query: https://pypi.org/pypi/imperson/json
+  status: 404
+  result: no package
+- registry: github
+  query: https://api.github.com/orgs/imperson
+  status: 404
+  result: no organization
+- registry: rubygems
+  result: no package
+- registry: crates.io
+  result: no package
+- registry: nuget
+  result: no package
+- registry: maven-central
+  result: no package
+- registry: pkg.go.dev
+  result: no package
+- registry: packagist
+  result: no package
+- registry: postman
+  query: postman.com public search for "imperson"
+  result: >-
+    no Imperson workspace or collection; matches were unrelated ("impersonation" auth collections from
+    other publishers)
+summary:
+  package_count: 0
+  official_count: 0
+  languages: []
+  checked: '2026-08-14'

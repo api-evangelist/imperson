@@ -1,0 +1,32 @@
+generated: '2026-08-14'
+method: searched
+source: >-
+  every page in https://www.imperson.com/pages-sitemap.xml, plus live probes of
+  https://api.imperson.com (product API) and https://www.imperson.com/_api/mcp (Wix Site MCP)
+notes: >-
+  No rate limits are published or observable. Imperson has no developer portal, no API reference and no
+  OpenAPI, so there is nothing documented to record. The product API host answers HTTP 401 on every
+  path behind an HTTP Basic challenge, which means no anonymous request ever reaches a handler that
+  could return a rate-limit header — the 401 responses carry no X-RateLimit-*, RateLimit-* or
+  Retry-After header. The anonymous Wix Site MCP endpoint returned HTTP 200 to tools/list with no
+  rate-limit headers of any kind. An honest zero, recorded rather than omitted.
+rate_limits: []
+limit_count: 0
+headers_observed: []
+exhaustion_status: null
+surfaces_checked:
+- url: https://api.imperson.com/
+  status: 401
+  rate_limit_headers: none
+  note: 'HTTP Basic challenge (realm="messaging.api"); no anonymous handler reachable'
+- url: https://api.imperson.com/health
+  status: 200
+  rate_limit_headers: none
+- url: https://www.imperson.com/_api/mcp
+  status: 200
+  rate_limit_headers: none
+  note: anonymous JSON-RPC tools/list; Wix platform surface, limits undocumented
+- url: https://www.imperson.com/developers
+  status: 404
+  note: no developer portal exists to document limits on
+checked: '2026-08-14'

@@ -1,0 +1,38 @@
+generated: '2026-08-14'
+method: searched
+source: >-
+  https://www.imperson.com/pages-sitemap.xml plus every page it lists (/, /offering, /toolbox, /about,
+  /marketing-lead-generation, /customer-support, /sales-e-commerce, /engagement-entertainment, /blog)
+notes: >-
+  Imperson publishes no pricing page. https://www.imperson.com/pricing returns HTTP 404 and no pricing
+  page appears in the sitemap. The enterprise platform is sold entirely through a "CONTACT SALES" form
+  that repeats on every solution page; no tier names, no prices, no quotas, no overage terms and no
+  limits are published anywhere on the site. The one commercial statement the company does make is that
+  its self-service Toolbox FAQ chatbot builder is "Free" — but with no tier definition, no quota, and no
+  published limit attached to it, so it is recorded as an unpriced offer rather than a plan.
+plans: []
+plan_count: 0
+currency: null
+billing_model: contact-sales
+free_tier:
+  offered: true
+  name: Toolbox
+  url: https://toolbox.imperson.com
+  claim: >-
+    "Toolbox - free, self-service conversational FAQ chatbots ... ✓ Simple. Build a chatbot in minutes
+    ✓ Free. Deploy to your business website ✓ Open. Monitor your visitor conversations"
+  quota: null
+  limits: null
+  note: >-
+    Marketed as free on https://www.imperson.com/toolbox with no published quota, seat count, message
+    cap, or upgrade path. Not counted as a plan because no plan terms are published.
+x-evidence:
+- url: https://www.imperson.com/pricing
+  status: 404
+- url: https://www.imperson.com/toolbox
+  status: 200
+- url: https://www.imperson.com/offering
+  status: 200
+- url: https://www.imperson.com/pages-sitemap.xml
+  status: 200
+  note: nine pages, none of them a pricing or plans page

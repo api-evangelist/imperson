@@ -1,0 +1,65 @@
+generated: '2026-08-14'
+method: probed
+source: https://chat.imperson.com/loader.js
+docs: https://www.imperson.com/toolbox
+notes: >-
+  Imperson serves one publicly-fetchable, embeddable client-side component: the Toolbox chat widget
+  loader. It is distributed from chat.imperson.com as a plain script + stylesheet pair with no package
+  registry behind it, so there is no version to read — the URL is unpinned and floats to whatever the
+  host currently serves. Consumers cannot tell what build they are getting. The loader was fetched and
+  read in full on 2026-08-14; everything recorded below comes from that file, not from documentation
+  (Imperson publishes no embed reference).
+components:
+- family: chat-widget
+  name: Imperson Toolbox chat loader
+  kind: embedded-widget
+  distribution: cdn
+  registry: null
+  version: null
+  version_note: >-
+    Unpinned. The documented embed points at https://chat.imperson.com/loader.js with no version
+    segment or query, and no package registry mirrors it, so there is no published version or release
+    date to record. This is the finding, not a gap in checking.
+  loader:
+    script: https://chat.imperson.com/loader.js
+    script_status: 200
+    stylesheet: https://chat.imperson.com/loader.css
+    stylesheet_status: 200
+    element_id: impersonloader
+  configuration:
+  - attribute: data-key
+    required: true
+    purpose: bot key; passed to the chat iframe as ?key=
+  - attribute: data-title
+    required: false
+    purpose: title rendered in the widget header label
+  - attribute: data-message
+    required: false
+    purpose: proactive greeting shown in a bubble 3.5s after load, hidden after 8.5s
+  - attribute: data-css
+    required: false
+    purpose: stylesheet URL the loader injects before rendering
+  runtime:
+    renders: >-
+      injects a #impersonroot container with a header toggle, a text bubble and an iframe sourced from
+      //<loader-host>/?key=<data-key>&host=<loader-host>
+    dependencies:
+    - https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js
+    - https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css
+    branding: >-
+      appends a non-removable "Powered by Imperson Toolbox" link to https://www.imperson.com/toolbox
+  host_platform: AWS Elastic Beanstalk (services2-env.eba-kafahfup.us-east-1.elasticbeanstalk.com)
+summary:
+  component_count: 1
+  families: [chat-widget]
+  registry_backed: 0
+  unpinned: 1
+x-evidence:
+- url: https://chat.imperson.com/loader.js
+  status: 200
+  bytes: 3945
+- url: https://chat.imperson.com/loader.css
+  status: 200
+  bytes: 4976
+- url: https://chat.imperson.com/
+  status: 200

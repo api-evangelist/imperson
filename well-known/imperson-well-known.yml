@@ -1,0 +1,126 @@
+generated: '2026-08-14'
+method: probed
+source: live HTTP probes of every Imperson host found in apis.yml and in the site's own JS bundles
+notes: >-
+  Nothing was served. Every /.well-known/ path on the marketing host returns HTTP 400 — the Wix
+  platform rejects unrecognised /.well-known/* requests with a 400 error shell rather than a 404 —
+  and every path on the product API host returns HTTP 401 behind an HTTP Basic challenge. The
+  self-service app host (toolbox.imperson.com) is a React single-page app whose catch-all answers
+  HTTP 200 with the same index.html for every path, including /.well-known/agent-card.json; those
+  200s are the SPA shell, NOT documents, and are recorded here as misses so a later round does not
+  mistake them for hits. No WellKnown, SecurityTxt or AgentCard pointer is emitted from this file.
+hosts:
+- host: https://www.imperson.com
+  platform: Wix
+  documents:
+  - path: /.well-known/security.txt
+    status: 400
+    served: false
+  - path: /.well-known/openid-configuration
+    status: 400
+    served: false
+  - path: /.well-known/oauth-authorization-server
+    status: 400
+    served: false
+  - path: /.well-known/oauth-protected-resource
+    status: 400
+    served: false
+  - path: /.well-known/api-catalog
+    status: 400
+    served: false
+  - path: /.well-known/ai-plugin.json
+    status: 400
+    served: false
+  - path: /.well-known/agent-card.json
+    status: 400
+    served: false
+  - path: /.well-known/agent.json
+    status: 400
+    served: false
+  - path: /llms.txt
+    status: 200
+    served: true
+    file: ../llms/imperson-llms.txt
+    note: the one machine-readable document this company serves; advertises the Wix Site MCP endpoint
+  - path: /robots.txt
+    status: 200
+    served: true
+    note: 'User-agent: * / Allow: / — no agent-specific rules, no disallowed probe paths'
+  - path: /sitemap.xml
+    status: 200
+    served: true
+    note: Wix sitemap index; nine pages total, no developer or reference pages
+- host: https://api.imperson.com
+  platform: AWS Elastic Beanstalk / Microsoft-IIS 10.0
+  note: >-
+    Imperson's product API host. Every path answers HTTP 401 with
+    'WWW-Authenticate: Basic realm="messaging.api"'. Only /health is anonymous.
+  documents:
+  - path: /.well-known/security.txt
+    status: 401
+    served: false
+  - path: /.well-known/openid-configuration
+    status: 401
+    served: false
+  - path: /.well-known/oauth-authorization-server
+    status: 401
+    served: false
+  - path: /.well-known/api-catalog
+    status: 401
+    served: false
+  - path: /.well-known/ai-plugin.json
+    status: 401
+    served: false
+  - path: /.well-known/agent-card.json
+    status: 401
+    served: false
+  - path: /.well-known/agent.json
+    status: 401
+    served: false
+  - path: /health
+    status: 200
+    served: true
+    note: returns the string "OK"; the only unauthenticated response on this host
+- host: https://toolbox.imperson.com
+  platform: React single-page app (Auth0 authentication)
+  note: >-
+    SPA catch-all — HTTP 200 with the same index.html for EVERY path probed. Treated as a miss on
+    all discovery paths per the pipeline's SPA false-positive rule; confirmed by comparing bodies.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    served: false
+    body: SPA shell (text/html)
+  - path: /.well-known/agent-card.json
+    status: 200
+    served: false
+    body: SPA shell (text/html)
+  - path: /.well-known/agent.json
+    status: 200
+    served: false
+    body: SPA shell (text/html)
+  - path: /.well-known/openid-configuration
+    status: 200
+    served: false
+    body: SPA shell (text/html)
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    served: false
+    body: SPA shell (text/html)
+  - path: /.well-known/api-catalog
+    status: 200
+    served: false
+    body: SPA shell (text/html)
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    served: false
+    body: SPA shell (text/html)
+  - path: /llms.txt
+    status: 200
+    served: false
+    body: SPA shell (text/html)
+summary:
+  hosts_probed: 3
+  documents_served: 3
+  well_known_documents_served: 0
+  pointer_emitted: false

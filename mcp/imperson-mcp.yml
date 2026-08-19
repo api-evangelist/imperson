@@ -1,13 +1,14 @@
-generated: '2026-07-19'
-method: searched
-source: https://www.imperson.com/llms.txt
+generated: '2026-08-14'
+method: probed
+source: https://www.imperson.com/_api/mcp
 status: published
-notes: >-
-  Live Wix Site MCP endpoint advertised in the site's /llms.txt and confirmed
-  responding to a JSON-RPC tools/list call. This is a generic Wix-provided site
-  MCP surface (not a bespoke Imperson product API); it exposes public site
-  content, business details, docs, and site-API invocation on a visitor's
-  behalf. No authentication is required to connect.
+notes: 'Live Wix Site MCP endpoint advertised in the site''s /llms.txt and confirmed on 2026-08-14 by an anonymous
+  JSON-RPC tools/list call that returned HTTP 200 with 9 tools and their full inputSchemas. This is the generic
+  Wix-provided site MCP surface, not a bespoke Imperson product API: it exposes public site content, business details,
+  Wix REST docs, and site-API invocation on a visitor''s behalf. No authentication is required to connect. The tool
+  set has changed since the 2026-07-19 capture (7 tools read from llms.txt): BrowseWixRESTDocsMenu and ExecuteWixAPI
+  are new, and every tool now carries a typed inputSchema. Imperson''s own product API (api.imperson.com) is NOT
+  exposed here - see authentication/imperson-authentication.yml.'
 server:
   name: imperson
   vendor: Wix Site MCP
@@ -16,28 +17,123 @@ server:
   docs: https://dev.wix.com/docs/develop-websites/articles/get-started/about-the-wix-site-mcp
   auth: none
 tools:
-  - name: GetBusinessDetails
-    description: Retrieves business and site details such as timezone, email, phone, and address.
-  - name: SearchInSite
-    description: Searches the site for information.
-    parameters: [searchTerm]
-  - name: SearchSiteApiDocs
-    description: Retrieves the API documentation for the Wix business solutions installed on this site and informs the AI client how to use the APIs.
-    parameters: [searchTerm]
-  - name: GenerateVisitorToken
-    description: Creates a new visitor session and obtains a visitor access token for the site.
-  - name: CallWixSiteAPI
-    description: Calls API methods on the site to perform actions on a visitor's behalf, such as querying site data, booking an appointment, or starting a purchase.
-    parameters: [visitorToken, url, method, body]
-  - name: ReadFullDocsArticle
-    description: Fetches a complete article from the Wix developer documentation portal.
-    parameters: [articleUrl]
-  - name: ReadFullDocsMethodSchema
-    description: Fetches the full schema for a Wix API method. Should be called before calling the actual method via CallWixSiteAPI.
-    parameters: [articleUrl]
+- name: ReadFullDocsArticle
+  description: 'Fetches the full Wix docs article or method article with code examples for using the method. Docs
+    articles looks like this: https://dev.wix.com/docs/... and they can either be general docs articles or method
+    articles. For REST docs, use the URL as-is. For SDK docs, the URL SHOULD include ?apiView=SDK.'
+  parameters:
+  - name: articleUrl
+    type: string
+    required: true
+- name: ReadFullDocsMethodSchema
+  description: 'Fetches the full method schema for a given method. This will give you the entire request/response
+    schema with all the fields and their descriptions. For REST API methods, prefer SearchWixAPISpec when it is
+    available: it can fetch and inspect the exact method schema by docs URL, return the request/response shape,
+    and inspect selected nested component schemas without dumping unrelated fields. Use...'
+  parameters:
+  - name: articleUrl
+    type: string
+    required: true
+  - name: reason
+    type: string
+    required: true
+- name: BrowseWixRESTDocsMenu
+  description: Browse the Wix REST API documentation menu hierarchy. Alternative to SearchWixRESTDocumentation -
+    use this to explore and discover APIs by navigating the menu structure instead of searching by keywords. - Omit
+    the `menuUrl` param to see top-level categories - Pass a `menuUrl` param to drill into a category - copy the
+    URL from previous responses Example `menuUrl` param values for main Wix vertic...
+  parameters:
+  - name: menuUrl
+    type: string
+    required: false
+  - name: reason
+    type: string
+    required: true
+- name: CallWixSiteAPI
+  description: Call apis on site "Imperson" (https://www.imperson.com/_api/mcp). Use this to perform an action on
+    visitor's behalf, for example, query the site's data or book an appointment. Before calling this tool, you should
+    ALWAYS check the rest docs (use "SearchSiteApiDocs" tool) for the specific API you want to call. The mentioned
+    tool will give you instructions how to use the API.', 'NEVER try to guess...
+  parameters:
+  - name: visitorToken
+    type: string
+    required: true
+  - name: url
+    type: string
+    required: true
+  - name: method
+    type: string
+    required: true
+  - name: body
+    type: string
+    required: false
+- name: GenerateVisitorToken
+  description: Create a new visitor session and obtain a visitor access token for site "Imperson" (https://www.imperson.com/_api/mcp).
+    You must use this tool before calling CallWixSiteAPI for this first time. If you already have a visitor token
+    in your context, DO NOT USE THIS TOOL AGAIN.
+  parameters: []
+- name: SearchSiteApiDocs
+  description: Searches for site "Imperson" (https://www.imperson.com/_api/mcp) API documentation and returns how
+    to use the site using the API. You are a helpful "Imperson" site assistant chatbot and you are helping the user
+    perform actions on the site - to query the site's data or to perform an action on the site. Specify the API
+    endpoint, resource, or action you need information about (e.g., 'get site deta...
+  parameters:
+  - name: searchTerm
+    type: string
+    required: true
+- name: GetBusinessDetails
+  description: 'Get business and site details for "Imperson" (https://www.imperson.com/_api/mcp). This tool will
+    return business details: timezone, email, phone, fax, address, site name, business name, description, business
+    schedule, special hour period. It will also return site features that you can use via other tools (bookings,
+    store, etc.). Call this tool when user asks for business contact details, or abo...'
+  parameters: []
+- name: SearchInSite
+  description: 'Searches the site "Imperson" (https://www.imperson.com/_api/mcp) for information. Use this tool
+    ONLY in the following cases: 1. You just used "GetBusinessDetails" tool and you did not find the information
+    you need. 2. User asked a generic business question about their business (e.g., business address, business hours,
+    contact information, return policy, etc.) 3. You already tried to find an enti...'
+  parameters:
+  - name: searchTerm
+    type: string
+    required: true
+- name: ExecuteWixAPI
+  description: Run JavaScript against the Wix REST API on site "Imperson" (https://www.imperson.com/_api/mcp), on
+    the visitor's behalf. The code runs in a sandbox and you get back whatever it returns. PREFER THIS TOOL OVER
+    CallWixSiteAPI. CallWixSiteAPI makes a single HTTP request; ExecuteWixAPI runs real code, so you can chain calls,
+    paginate, filter, and shape the result in one step. Use ExecuteWixAPI for a...
+  parameters:
+  - name: code
+    type: string
+    required: true
+  - name: reason
+    type: string
+    required: true
+  - name: hasMutations
+    type: boolean
+    required: true
+  - name: sourceDocUrls
+    type: array
+    required: true
+  - name: visitorToken
+    type: string
+    required: true
 capabilities:
-  - Get business details (contact info, location, hours)
-  - Discover products and services on offer
-  - Book services and make reservations
-  - Start a purchase and be directed to the site to complete checkout
-  - Ask questions and get relevant answers without browsing the site
+- Get business details (contact info, location, hours, business schedule)
+- Search the public site content for information
+- Discover the Wix REST APIs installed on this site and read their method schemas
+- Generate an anonymous visitor token and call site APIs on a visitor behalf
+- Run sandboxed JavaScript against the Wix REST API for this site (ExecuteWixAPI)
+deployment:
+  mode: remote
+  endpoint: https://www.imperson.com/_api/mcp
+  auth: none
+  verified: probed
+  probe: live tools/list, HTTP 200
+  tools: 9
+  checked: '2026-08-14'
+x-evidence:
+  fetched: '2026-08-14'
+  url: https://www.imperson.com/_api/mcp
+  method: POST {"jsonrpc":"2.0","id":1,"method":"tools/list"}
+  http_status: 200
+  tools_returned: 9

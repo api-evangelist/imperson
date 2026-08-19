@@ -1,0 +1,67 @@
+generated: '2026-08-14'
+method: probed
+source: >-
+  live HTTP probes of api.imperson.com plus the publicly-served JavaScript bundle of Imperson's own
+  self-service app at https://toolbox.imperson.com/static/js/main.9d3efa87.chunk.js
+docs: null
+notes: >-
+  Imperson publishes NO authentication documentation, no developer portal, and no OpenAPI. Everything
+  below was established by probing hosts the company controls; nothing here is derived from a
+  specification because none exists. This file exists to record that a real, reachable product API host
+  was confirmed and to describe the authentication challenge it actually returns — it is NOT evidence
+  that the provider documents its authentication, and no `type: Authentication` pointer is emitted in
+  apis.yml for that reason.
+schemes:
+- name: messaging-api-basic
+  type: http
+  scheme: basic
+  realm: messaging.api
+  host: https://api.imperson.com
+  evidence: >-
+    HTTP 401 with 'WWW-Authenticate: Basic realm="messaging.api"' returned for every path probed on
+    api.imperson.com (/, /api, /docs, /swagger, /openapi.json, /.well-known/*). Server header
+    'Microsoft-IIS/10.0', 'x-powered-by: ASP.NET'. Host resolves to
+    messagingapi-env.ntktwhrm2k.us-east-1.elasticbeanstalk.com (AWS Elastic Beanstalk).
+  documented_by_provider: false
+  probed: '2026-08-14'
+- name: toolbox-auth0
+  type: oauth2
+  vendor: Auth0
+  host: https://toolbox.imperson.com
+  evidence: >-
+    Imperson's free self-service chatbot builder (linked from https://www.imperson.com/toolbox) is a
+    React SPA that ships auth0-js and exchanges tokens through
+    https://auth0-proxy-dot-toolbox-235607.appspot.com/userinfo, with custom claims namespaced under
+    https://imperson.com/ (app_metadata, email, name, user_id). This is end-user login for the app,
+    not a documented developer authorization flow — no client registration, scope reference, or token
+    endpoint is published.
+  documented_by_provider: false
+  probed: '2026-08-14'
+summary:
+  types: [http-basic, oauth2]
+  api_key_in: []
+  oauth2_flows: []
+  public_reference_published: false
+  spec_backed: false
+anonymous_surfaces:
+- url: https://api.imperson.com/health
+  status: 200
+  body: '"OK"'
+  note: the only unauthenticated response observed on the product API host
+- url: https://www.imperson.com/_api/mcp
+  status: 200
+  auth: none
+  note: >-
+    Wix Site MCP endpoint — anonymous, but it is the Wix platform's site surface, not Imperson's
+    product API. See mcp/imperson-mcp.yml.
+x-evidence:
+- url: https://api.imperson.com/
+  status: 401
+  header: 'WWW-Authenticate: Basic realm="messaging.api"'
+- url: https://api.imperson.com/health
+  status: 200
+- url: https://docs.imperson.com/
+  status: 302
+  note: redirects to http://drive.google.com/a/imperson.com — a Google Workspace Drive, not public docs
+- url: https://www.imperson.com/developers
+  status: 404
