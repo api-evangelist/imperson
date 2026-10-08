@@ -71,6 +71,10 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Plans
+  url: plans/imperson-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/imperson-rate-limits.yml
 - type: Website
   url: https://www.imperson.com/
 - type: Blog
